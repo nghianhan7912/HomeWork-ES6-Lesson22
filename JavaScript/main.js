@@ -50,8 +50,12 @@ const renderTable = () => {
         getElement("#tdHead").innerHTML = td
         getElement("#form").innerHTML = "Vui lòng chọn đối tượng"
         getElement("#tbody").innerHTML = ""
-        let sort = listPerson.arrTotal.sort((a,b)=> Number(a.maND) - Number(b.maND) )
-            renderPerson(sort)
+        getElement("#btnEdit").style.display = "none"
+        getElement("#btnAdd").style.display = "none"
+        getElement("#btnDTB").style.display = "none"
+        getElement("#salary").style.display = "none"
+        let sort = listPerson.arrTotal.sort((a, b) => Number(a.maND) - Number(b.maND))
+        renderPerson(sort)
         // renderPerson(listPerson.arrTotal)
     } else if (select === "Student") {
         getElement("#sort").value = ""
@@ -67,7 +71,7 @@ const renderTable = () => {
             <td>Hoá</td>
         `
         const form = `
-        <div class="mb-3">
+        <div id="ma" class="mb-3">
             <label for="maND" class="form-label">Mã người dùng</label>
             <input type="text" class="form-control" id="maND">
             <span style="color:red" id="tbmaND"></span>
@@ -124,7 +128,7 @@ const renderTable = () => {
             <td>Lương theo ngày</td>
         `
         const form = `
-        <div class="mb-3">
+        <div id="ma" class="mb-3">
             <label for="maND" class="form-label">Mã người dùng</label>
             <input type="text" class="form-control" id="maND">
             <span style="color:red" id="tbmaND"></span>
@@ -176,7 +180,7 @@ const renderTable = () => {
             <td>Đánh giá</td>
         `
         const form = `
-        <div class="mb-3">
+        <div id="ma" class="mb-3">
             <label for="maND" class="form-label">Mã người dùng</label>
             <input type="text" class="form-control" id="maND">
             <span style="color:red" id="tbmaND"></span>
@@ -235,7 +239,7 @@ const getInfo = (isEdit) => {
         const b = getElement("#diemHoa").value
         const c = getElement("#diemLy").value
         const person = new Students(name, address, maND, email, "Student", diemToan, diemLy, diemHoa)
-        isValid &= vlMaND(person.maND, "#tbmaND") && checkMaND(person.maND, listPerson.arrTotal, "#tbmaND", "Mã người dùng đã tồn tại",isEdit)
+        isValid &= vlMaND(person.maND, "#tbmaND") && checkMaND(person.maND, listPerson.arrTotal, "#tbmaND", "Mã người dùng đã tồn tại", isEdit)
         isValid &= vlName(person.name, "#tbName")
         isValid &= vlAddress(person.address, "#tbAddress")
         isValid &= vlEmail(person.email, "#tbEmail")
@@ -249,7 +253,7 @@ const getInfo = (isEdit) => {
         const b = getElement("#salaryDay").value
         const salaryDay = getElement("#salaryDay").value * 1
         const person = new Employee(name, address, maND, email, "Employee", dayWork, salaryDay)
-        isValid &= vlMaND(person.maND, "#tbmaND") && checkMaND(person.maND, listPerson.arrTotal, "#tbmaND", "Mã người dùng đã tồn tại",isEdit)
+        isValid &= vlMaND(person.maND, "#tbmaND") && checkMaND(person.maND, listPerson.arrTotal, "#tbmaND", "Mã người dùng đã tồn tại", isEdit)
         isValid &= vlName(person.name, "#tbName")
         isValid &= vlAddress(person.address, "#tbAddress")
         isValid &= vlEmail(person.email, "#tbEmail")
@@ -261,7 +265,7 @@ const getInfo = (isEdit) => {
         const bill = getElement("#bill").value
         const comment = getElement("#comment").value
         const person = new Customer(name, address, maND, email, "Customer", nameCompany, bill, comment)
-        isValid &= vlMaND(person.maND, "#tbmaND") && checkMaND(person.maND, listPerson.arrTotal, "#tbmaND", "Mã người dùng đã tồn tại",isEdit)
+        isValid &= vlMaND(person.maND, "#tbmaND") && checkMaND(person.maND, listPerson.arrTotal, "#tbmaND", "Mã người dùng đã tồn tại", isEdit)
         isValid &= vlName(person.name, "#tbName")
         isValid &= vlAddress(person.address, "#tbAddress")
         isValid &= vlEmail(person.email, "#tbEmail")
@@ -349,12 +353,16 @@ getElement("#btnThem").onclick = () => {
     getElement("#btnAdd").style.display = "inline-block"
     getElement("#btnDTB").style.display = "none"
     getElement("#salary").style.display = "none"
-    if(select === ""){
-     getElement("#btnAdd").style.display = "none"
-    }else if (select === "Student") {
+    if (select === "") {
+        getElement("#btnAdd").style.display = "none"
+    } else if (select === "Student") {
+        getElement("#ma").style.display = "inline-block"
         getElement("#DTB").style.display = "none"
     } else if (select === "Employee") {
+        getElement("#ma").style.display = "inline-block"
         getElement("#tongLuong").style.display = "none"
+    } else {
+        getElement("#ma").style.display = "inline-block"
     }
     clearInput()
 }
@@ -368,7 +376,7 @@ getElement("#btnAdd").onclick = () => {
             listPerson.addPerson(select, person)
             setLocal(listPerson.arrStudents, "dshs")
             renderPerson(listPerson.arrStudents)
-            return listPerson.arrStudents
+            // return listPerson.arrStudents
         } else if (select === "Employee") {
             listPerson.addPerson(select, person)
             setLocal(listPerson.arrEmployee, "dsnv")
@@ -378,6 +386,7 @@ getElement("#btnAdd").onclick = () => {
             setLocal(listPerson.arrCustomer, "dskh")
             renderPerson(listPerson.arrCustomer)
         }
+        getElement("#close").click()
     }
 }
 // Set Local
@@ -422,6 +431,8 @@ const getLocal = () => {
 getLocal()
 renderTable()
 renderPerson(listPerson.arrTotal)
+// let sort123 = listPerson.arrTotal.sort((a,b)=> Number(a.maND) - Number(b.maND) )
+// renderPerson(sort123)
 //Xoá người dùng
 window.xoaND = (maND) => {
     const select = getElement("#select").value
@@ -449,6 +460,7 @@ window.editND = (maND) => {
     clearSpan()
     getElement("#btnEdit").style.display = "inline-block"
     getElement("#btnAdd").style.display = "none"
+    getElement("#ma").style.display = "none"
     const select = getElement("#select").value
     if (select === "Student") {
         getElement("#DTB").style.display = "none"
@@ -489,7 +501,7 @@ window.editND = (maND) => {
 getElement("#btnEdit").onclick = () => {
     const select = getElement("#select").value
     const person = getInfo(true)
-    if(person === "undefined"){
+    if (person === "undefined") {
         return false
     } else {
         const index1 = listPerson.arrTotal.findIndex((a) => a.maND === person.maND)
@@ -529,50 +541,50 @@ getElement("#salary").onclick = () => {
     getElement("#totalSalary").value = salary
 }
 // Sort
-let sort = ()=>{
+let sort = () => {
     const select1 = getElement("#select").value
     const select = getElement("#sort").value
-    if(select1 === ""){
-        if(select === ""){
-            let sort = listPerson.arrTotal.sort((a,b)=> Number(a.maND) - Number(b.maND) )
+    if (select1 === "") {
+        if (select === "") {
+            let sort = listPerson.arrTotal.sort((a, b) => Number(a.maND) - Number(b.maND))
             renderPerson(sort)
             // renderPerson(listPerson.arrTotal)
-        } else if(select === "sortName"){
-            let sort = listPerson.arrTotal.sort((a,b)=> a.name.localeCompare(b.name) )
+        } else if (select === "sortName") {
+            let sort = listPerson.arrTotal.sort((a, b) => a.name.localeCompare(b.name))
             renderPerson(sort)
-        } else if(select === "sortName1"){
-            let sort = listPerson.arrTotal.sort((a,b)=> b.name.localeCompare(a.name))
+        } else if (select === "sortName1") {
+            let sort = listPerson.arrTotal.sort((a, b) => b.name.localeCompare(a.name))
             renderPerson(sort)
         }
-    } else if (select1 === "Student"){
+    } else if (select1 === "Student") {
         getElement("#sort").value = ""
-        if(select === ""){
+        if (select === "") {
             renderPerson(listPerson.arrStudents)
-        } else if(select === "sortName"){
-            let sort = listPerson.arrStudents.sort((a,b)=> a.name.localeCompare(b.name) )
+        } else if (select === "sortName") {
+            let sort = listPerson.arrStudents.sort((a, b) => a.name.localeCompare(b.name))
             renderPerson(sort)
-        } else if(select === "sortName1"){
-            let sort = listPerson.arrStudents.sort((a,b)=> b.name.localeCompare(a.name))
+        } else if (select === "sortName1") {
+            let sort = listPerson.arrStudents.sort((a, b) => b.name.localeCompare(a.name))
             renderPerson(sort)
         }
-    } else if (select1 === "Employee"){
-        if(select === ""){
+    } else if (select1 === "Employee") {
+        if (select === "") {
             renderPerson(listPerson.arrEmployee)
-        } else if(select === "sortName"){
-            let sort = listPerson.arrEmployee.sort((a,b)=> a.name.localeCompare(b.name) )
+        } else if (select === "sortName") {
+            let sort = listPerson.arrEmployee.sort((a, b) => a.name.localeCompare(b.name))
             renderPerson(sort)
-        } else if(select === "sortName1"){
-            let sort = listPerson.arrEmployee.sort((a,b)=> b.name.localeCompare(a.name))
+        } else if (select === "sortName1") {
+            let sort = listPerson.arrEmployee.sort((a, b) => b.name.localeCompare(a.name))
             renderPerson(sort)
         }
-    } else if (select1 === "Customer"){
-        if(select === ""){
+    } else if (select1 === "Customer") {
+        if (select === "") {
             renderPerson(listPerson.arrCustomer)
-        } else if(select === "sortName"){
-            let sort = listPerson.arrCustomer.sort((a,b)=> a.name.localeCompare(b.name) )
+        } else if (select === "sortName") {
+            let sort = listPerson.arrCustomer.sort((a, b) => a.name.localeCompare(b.name))
             renderPerson(sort)
-        } else if(select === "sortName1"){
-            let sort = listPerson.arrCustomer.sort((a,b)=> b.name.localeCompare(a.name))
+        } else if (select === "sortName1") {
+            let sort = listPerson.arrCustomer.sort((a, b) => b.name.localeCompare(a.name))
             renderPerson(sort)
         }
     }
@@ -581,20 +593,24 @@ getElement("#sort").onchange = sort
 // Clear span
 function clearSpan() {
     const select = getElement("#select").value
-    getElement("#tbmaND").innerHTML = ""
-    getElement("#tbName").innerHTML = ""
-    getElement("#tbAddress").innerHTML = ""
-    getElement("#tbEmail").innerHTML = ""
-    if (select === "Student") {
-        getElement("#tbToan").innerHTML = ""
-        getElement("#tbLy").innerHTML = ""
-        getElement("#tbHoa").innerHTML = ""
-    } else if (select === "Employee") {
-        getElement("#tbDayWork").innerHTML = ""
-        getElement("#tbSalaryDay").innerHTML = ""
-    } else if (select === "Customer") {
-        getElement("#tbNameCompany").innerHTML = ""
-        getElement("#tbBill").innerHTML = ""
-        getElement("#tbComment").innerHTML = ""
+    if (select !== "") {
+        getElement("#tbmaND").innerHTML = ""
+        getElement("#tbName").innerHTML = ""
+        getElement("#tbAddress").innerHTML = ""
+        getElement("#tbEmail").innerHTML = ""
+        if (select === "Student") {
+            getElement("#tbToan").innerHTML = ""
+            getElement("#tbLy").innerHTML = ""
+            getElement("#tbHoa").innerHTML = ""
+        } else if (select === "Employee") {
+            getElement("#tbDayWork").innerHTML = ""
+            getElement("#tbSalaryDay").innerHTML = ""
+        } else if (select === "Customer") {
+            getElement("#tbNameCompany").innerHTML = ""
+            getElement("#tbBill").innerHTML = ""
+            getElement("#tbComment").innerHTML = ""
+        }
+    } else {
+        return false
     }
 }
