@@ -1,0 +1,384 @@
+// let, const
+
+// So sanh var ,let ,const
+
+// var
+// Cơ chế hoisting (hoisted) : Là cơ chế đưa phần khai báo lên đầu mỗi scope
+// Pham vi hoạt động của biến (scope): function scope , global scope
+// +Global Scope: biến được khai báo ở ngoài cùng của file
+// +Function Scope: Biến được khai báo bên trong 1 function
+// Var cho phép khai báo lại và gán lại giá trị trong cùng scope
+var fullname = "Nguyễn Nghĩa Nhân" // Global scope
+function sum(){
+    var number = 10 // function scope
+}
+// let, const
+// Cơ chế hoisting : đưa phần khai báo vào temporal dead zone => không thể truy cập đến khi biến được khởi tạo
+// Pham vi hoạt động của biến (scope): function scope , global scope , block scope
+// +Global Scope: biến được khai báo ở ngoài cùng của file
+// +Function Scope: Biến được khai báo bên trong 1 function
+// +Block Scope : Biến được khai báo trong { }
+// let, const : Không cho phép khai báo lại trong cùng scope
+// Khi khai báo biến = const thì bắt buộc phải gán giá trị cho biến và không cho phép gán lại giá trị
+let fullname1 = "Nguyễn Quỳnh Anh"
+{
+    let age = 20 /// Block scope
+    var age1 = 40;
+    const name1 = "xyz"
+}
+function logMessage(){
+    let name = "abc"
+    if(true){
+        let name 
+        console.log(name);
+    }
+}
+logMessage()
+
+
+
+
+// ARROW FUNCTION
+const showInfo = (name) => {
+    console.log(name);
+}
+const sum1 = (num1,num2) =>{
+    return num1 + num2
+}
+const sum2 = (num3,num4) => num3 - num4
+showInfo("abc")
+console.log(sum1(9,10));
+console.log(sum2(15,10));
+
+// Important 
+// This context (ngữ cánh con trỏ this)
+// - this trong phương thức trả về đối tượng chứa phương thúc đó
+// - this trong function trả về đối tượng global (window),ở chế độ strict => undefined
+// - this trong lớp đối tượng trả về đối tượng được tạo
+// - arrow function không có ngữ cảnh this (không làm thay đổi ngữ cảnh con trỏ this)
+// Khi khai báo phương thức nên sử dụng declaration function
+
+const student = {
+    name: "Nguyễn",
+    age: 28,
+    address: "HCM",
+    getInfo:function(){
+        console.log(this.name+this.age+this.address)
+        function logMess(mess){
+            console.log(this)
+            console.log(mess);
+        }
+        // logMess()    
+        const logMess1 = () => {
+            console.log(this)
+        }
+        const logMessBind = logMess.bind(student,"hello")
+        logMessBind()
+        // logMess1()
+    },
+    getInfo1:() =>{
+        console.log(this);
+    }
+}
+
+student.getInfo()
+student.getInfo1()
+
+
+
+// Destructuring (bóc tách phần tử)
+const user = {
+    lastName: "Nhân",
+    firstName: "Nguyễn",
+    age: 27,
+    gender: "Nam",
+    family: {
+        fatherName : "Nguyễn Hiếu",
+        motherName : "Nguyễn Thị",
+    },
+}
+// const firstName = user.firstName
+// const lastName = user.lastName
+// const fatherName = user.family.fatherName
+
+
+const {firstName,lastName,age,gender,family:{fatherName :fatherName}} = user
+
+console.log(fatherName);
+
+const productList = ["product","product1","product2"]
+const [,,c] = productList
+
+
+// Default parameter
+const logger = (logMess = "Hello") =>{
+    console.log(logMess);
+}
+logger()
+
+// REST 
+// const tinhTong = (a,b) => a+b
+
+
+// const tong = tinhTong(1,2)
+
+const tinhTongRest = (...number) => {
+    console.log(number);
+    let sum = 0
+    for (let i = 0;i<number.length; i++){
+        sum += number[i]
+    }
+    return sum
+}
+const tinhTong = tinhTongRest(1,2,3,4,5)
+console.log(tinhTong);
+
+
+// Template string `${}`
+
+
+// Spread operator
+
+const button = {
+    width: 100,
+    height: 20,
+    color: "white",
+    bgColor: "black",
+    attributes: {
+        fontWeight:700,
+        fontSize:20,
+    }
+} // referen type ( tham chiếu )
+
+const buttonSumit = {...button} // shallow coppy
+buttonSumit.width = 999
+buttonSumit.attributes.fontSize = 40
+console.log(buttonSumit);
+console.log(button);
+
+
+const buttonCancle = JSON.parse(JSON.stringify(button))
+buttonCancle.attributes.fontSize = 40
+console.log(buttonCancle);
+
+
+const buttonPrint = structuredClone(button)
+buttonPrint.attributes.fontWeight = 500
+console.log(buttonPrint);
+
+// Object literal
+const smartPhoneName = "iphone13 pro plus"
+
+const smartPhone = {
+    smartPhoneName
+}
+console.log(smartPhone);
+
+//for in (duyệt object) and for of (duyệt mảng)
+// for in
+for (let key in button){
+    console.log(key);
+    console.log(button[key]);
+}
+// for of
+const colors = ["red","yellow","black","orange","purple"]
+for (let key of colors){
+    console.log({key});
+}
+
+// những phương thức thường xuyên sử dụng với mảng
+// 1.map !important
+// 2.filter
+// 3.find
+// 4.findIndex
+// 5.forEach
+// 6.reduce
+
+
+const dsSanPham = [
+    {
+        id:111,
+        name: "iphone 14",
+        price : 1000
+    },
+    {
+        id:222,
+        name: "iphone 13",
+        price : 900
+    },
+    {
+        id:333,
+        name: "iphone 12",
+        price : 800
+    },
+    {
+        id:444,
+        name: "iphone 11",
+        price : 700
+    },
+    {
+        id:555,
+        name: "iphone 10",
+        price : 600
+    }
+]
+// const arr = []
+// function tang(){
+//     for(let i = 0; i < dsSanPham.length ; i++){
+//         const sp = dsSanPham[i]
+//         sp.price *= 2
+//         arr.push(sp)
+//     }
+// }
+// tang()
+// console.log(arr);
+
+
+
+
+
+
+// MAP
+// const arrSP = dsSanPham.map((value,index)=>{
+//     // C1
+//     // value.price *= 2
+//     // return value
+//     // C2
+//     return {
+//         ...value, // copy toàn bộ thuộc tính sẵn có của value
+//         price : value.price*2, // thay đổi thuộc tính price
+//     }
+// })
+// console.log(arrSP);
+// console.log(dsSanPham);
+
+//
+// const arrSP = dsSanPham.map((v) => ({
+//     ...v,
+//     price: v.price*2
+// }))
+
+// toán tử 3 ngôi
+// const arrSP = dsSanPham.map((v) => 
+//     v.id === 222 ? {...v, price : v.price*2} : v
+// )
+// const arrFilter = []
+// for (let i = 0;i<dsSanPham.length;i++){
+//     const sp = dsSanPham[i]
+//     if(sp.price === 600){
+//         arrFilter.push(sp)
+//     }
+// }
+
+
+
+
+
+
+
+
+
+// Filter 
+// Tìm
+const arrFilter = dsSanPham.filter((v) => {
+    return v.price === 600
+})
+console.log(arrFilter);
+
+// Xoá
+const arrFilterDelete = dsSanPham.filter((v) => v.id !== 111)
+
+
+
+// Find => trả về kết quả đầu tiền hợp điều kiện nếu không có kết quả phù hợp trả về undefine
+
+// C1
+// const findItem = dsSanPham.find((v)=>{
+//     return v.price === 800
+// })
+
+// C2
+const findItem = dsSanPham.find((v) => v.price === 800)
+console.log(findItem);
+
+
+
+
+
+// findIndex => trả về kết quả đầu tiên thoả mãn điều kiện => trả về cái index của phần tử tìm được nếu có và nếu không trả về -1
+const findIndex = dsSanPham.findIndex((v) => v.price === 300)
+console.log(findIndex);
+
+
+
+
+// REDUCE
+
+
+//ES5
+let tinhTong2 = 0
+for(let i = 0 ; i < dsSanPham.length ; i++){
+    tinhTong2 += dsSanPham[i].price
+}
+
+//ES6
+const tt = dsSanPham.reduce((v,e) => {
+    return (v += e.price)
+},0)
+console.log(tt);
+
+
+// forEach (duyệt mảng) : không return , không break
+
+dsSanPham.forEach((value,index) => {
+    value.id !== 111 ;
+})
+console.log(dsSanPham);
+
+
+
+// sort
+dsSanPham.sort((a,b) => a.price - b.price)
+console.log(dsSanPham);
+
+
+
+// import export
+import sum5 from "./utils.js";
+const tongAB = sum5(2,3)
+console.log(tongAB);
+
+import {value1 as value3, value2 as value4 } from "./utils.js"
+
+const tongbcd = value3(8,2)
+console.log(tongbcd);
+
+
+// Lớp đối tượng
+// ES5 
+function NhanVien(_name, _age){
+    this.name = _name
+    this.age = _age
+}
+
+// ES6
+class Employee {
+    // Hàm khởi tạo
+    constructor(_name,_age){
+        this.name = _name
+        this.age = _age
+    }
+
+    // Method (phương thức)
+    getInfo(){
+        return this.name + " " + this.age
+    }
+}
+
+const employ = new Employee("Nhân", 27)
+
+console.log(employ);
+
+const info = employ.getInfo()
+
+console.log(info);
