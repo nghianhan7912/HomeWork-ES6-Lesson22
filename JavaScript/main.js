@@ -348,7 +348,9 @@ getElement("#btnThem").onclick = () => {
     getElement("#btnAdd").style.display = "inline-block"
     getElement("#btnDTB").style.display = "none"
     getElement("#salary").style.display = "none"
-    if (select === "Student") {
+    if(select === ""){
+     getElement("#btnAdd").style.display = "none"
+    }else if (select === "Student") {
         getElement("#DTB").style.display = "none"
     } else if (select === "Employee") {
         getElement("#tongLuong").style.display = "none"
