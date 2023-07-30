@@ -343,6 +343,7 @@ const renderPerson = (arr) => {
 }
 // Chỉnh nút button
 getElement("#btnThem").onclick = () => {
+    clearSpan()
     const select = getElement("#select").value
     getElement("#btnEdit").style.display = "none"
     getElement("#btnAdd").style.display = "inline-block"
